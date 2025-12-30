@@ -38,4 +38,11 @@ Train Model ->
 Evaluate Model 0 ->
 Inference (Dự đoán dữ liệu mới)
 
+Chi tiết:
+- xử lý giá trị thiểu
+- Chuẩn hóa dự liệu bằng StandardScaler
+- Chia tập train & test
+- Huấn luyện các mô hình
+- Đánh giá bằng các metric phù hợp
+
 
