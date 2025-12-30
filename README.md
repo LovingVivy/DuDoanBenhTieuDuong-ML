@@ -105,8 +105,32 @@ du_doan_tieu_duong(
 
 ## Cấu trúc thư mục dự án
 Cấu trúc tổ chức file
-├── DuDoanTieuDuong.ipynb  
-├── Train/ Test            
+DuDoanBenhTieuDuong-ML/
+│
+├── app/
+│   ├── train.py
+│   ├── preprocess.py
+│   ├── inference.py
+│   └── utils.py
+│
+├── demo/
+│   ├── demo_inference.py
+│   └── demo.ipynb
+│
+├── data/
+│   ├── sample_data.csv
+│   └── README.md
+│
+├── reports/
+│   └── BaoCao_DuDoanTieuDuong.pdf
+│
+├── slides/
+│   └── Slide_DuDoanTieuDuong.pptx
+│
+├── requirements.txt
+├── README.md
+└── .gitignore
+       
 
 Sở đồ cáu trúc dự án để đảm báo mã nguồn chạy chính xác:
 * Load dữ liệu
