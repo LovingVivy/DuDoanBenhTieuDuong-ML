@@ -1,4 +1,6 @@
-# Khai báo thư viện
+
+## 🔹 Khai báo thư viện
+```python
 import numpy as np
 import pandas as pd
 from imblearn.over_sampling import SMOTE
