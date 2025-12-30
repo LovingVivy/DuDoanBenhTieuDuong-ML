@@ -13,14 +13,14 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 
-# Hiển thị dữ liệu
+## 🔹Hiển thị dữ liệu
 df = pd.read_csv(r'C:/Users/Duong/Documents/DataEngineer/tieuDuong/tieuduong/Train.csv')
 df.head()
 df.tail()
 
 df.info()
 
-# Tiền xử lý dữ liệu
+## 🔹Tiền xử lý dữ liệu
 #Xử lý bất thường
 df = df.drop(df[df['height'] < 1.0].index).reset_index(drop=True)
 df = df.dropna().reset_index(drop=True)
@@ -39,13 +39,13 @@ df = df[df['systolic_bp'] <= 250] # <= 250 thì đi viện
 selected_cols = ['age', 'glucose', 'bmi', 'systolic_bp', 'diastolic_bp', 
                  'family_diabetes', 'hypertensive', 'stroke', 'diabetic']
 
-# Xử lý trùng lặp
+## 🔹Xử lý trùng lặp
 num_duplicates = df.duplicated().sum()
 print(f"Số lượng dòng trùng lặp: {num_duplicates}")
 if num_duplicates > 0:
     display(df[df.duplicated(keep=False)].sort_values(by=list(df.columns)))
 
-# Xử lý giá trị thiếu
+## 🔹Xử lý giá trị thiếu
 -Kiểm tra tổng số giá trị thiếu ở mỗi cột
 missing_info = df.isnull().sum()
 print("Số lượng giá trị thiếu ở mỗi cột:")
@@ -83,12 +83,12 @@ print(df.dtypes)
 print("\nMissing values:")
 print(df.isnull().sum())
 
-# kiểm tra giá trị
+## 🔹kiểm tra giá trị
 df.nunique().sort_values()
 df.isna().sum()
 df['diabetic'].value_counts().head(5)
 
-# Thống kê dữ liệu
+## 🔹Thống kê dữ liệu
 glucose_mean = df['glucose'].mean()
 high_glucose_df = df[df['glucose'] > glucose_mean]
 num_high_glucose = len(high_glucose_df)
@@ -100,7 +100,7 @@ print(f"Tỷ lệ: {percentage:.2f}% trên tổng số dữ liệu")
 print("\nThống kê tình trạng bệnh trong nhóm Glucose cao:")
 print(high_glucose_df['diabetic'].value_counts())
 
-# Lọc ra những người có chỉ số BMI cao hơn mức trung bình
+## 🔹Lọc ra những người có chỉ số BMI cao hơn mức trung bình
 bmi_mean = df['bmi'].mean()
 high_bmi_df = df[df['bmi'] > bmi_mean]
 num_high_bmi = len(high_bmi_df)
@@ -112,14 +112,14 @@ print(f"Phần trăm: {percentage:.2f}% của tổng dữ liệu")
 print("\nDiabetic số người :")
 print(high_bmi_df['diabetic'].value_counts())
 
-# biểu đồ tương quan
+## 🔹biểu đồ tương quan
 fig = plt.figure(figsize=(20, 15))
 plt.figure(figsize=(9, 7))
 sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Ma trận tương quan', fontsize=14)
 plt.show()
 
-# biểu đồ hiển thị số người mắc bệnh trong dữ liệu
+## 🔹biểu đồ hiển thị số người mắc bệnh trong dữ liệu
 fig = plt.figure(figsize=(20, 15))
 plt.subplot(3, 3, 9)
 sizes = df['diabetic'].value_counts()
@@ -128,7 +128,7 @@ plt.title('Tỷ lệ bị tiểu đường trong dữ liệu', fontweight='bold'
 plt.tight_layout()
 plt.show()
 
-# Biểu đồ hiển thị các feature quan trọng
+## 🔹Biểu đồ hiển thị các feature quan trọng
 -Chỉ giữ lại cột số để train model
 df_model = df.select_dtypes(include=['float64', 'int64'])
 X = df_model.drop('diabetic', axis=1)
@@ -149,14 +149,14 @@ plt.grid(axis='x', alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# Chia dữ liệu thành 2 phần test & train
+## 🔹Chia dữ liệu thành 2 phần test & train
 df_model = df.select_dtypes(include=['number'])
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Chuẩn hóa dữ liệu
+## 🔹Chuẩn hóa dữ liệu
 scaler = StandardScaler()
 cols_to_scale = ['age', 'pulse_rate', 'systolic_bp', 'diastolic_bp', 'glucose',
                  'height', 'weight', 'bmi']
@@ -165,14 +165,13 @@ X_test_scaled  = X_test.copy()
 X_train_scaled[cols_to_scale] = scaler.fit_transform(X_train[cols_to_scale])
 X_test_scaled[cols_to_scale]  = scaler.transform(X_test[cols_to_scale])
 
-# Smote dữ liệu
+## 🔹Smote dữ liệu
 smote = SMOTE(random_state=42)
 -sinh dữ liệu
 X_train_smote, y_train_smote = smote.fit_resample(X_train, y_train)
 print("Sau khi SMOTE:", y_train_smote.value_counts())
 
-
-# Huấn luyện mô hình
+## 🔹Huấn luyện mô hình
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score,
     classification_report, PrecisionRecallDisplay,
@@ -226,26 +225,26 @@ model_metrics = pd.DataFrame(columns=[
     "modelname", "accuracy", "precision", "recall", "f1"
 ])
 
-# Model Logistic Regression (trước somte)
+## 🔹Model Logistic Regression (trước somte)
 logreg_before = LogisticRegression(max_iter=1000, class_weight='balanced', random_state=42)
 logreg_before.fit(X_train_scaled, y_train)
 result1 = evaluate_clf(logreg_before, "Logistic Regression (Trước SMOTE)", X_test_scaled, y_test)
 
-# Sau smote
+## 🔹Sau smote
 X_train_smote, y_train_smote = smote.fit_resample(X_train_scaled, y_train)
 print(f"Sau SMOTE:")
 logreg_after = LogisticRegression(max_iter=1000, random_state=42) 
 logreg_after.fit(X_train_smote, y_train_smote)
 result2 = evaluate_clf(logreg_after, "Logistic Regression (Sau SMOTE)", X_test_scaled, y_test)
 
-# Mô hình Random Forest
+## 🔹Mô hình Random Forest
 X_res, y_res = smote.fit_resample(X_train_scaled, y_train)
 rf = RandomForestClassifier(n_estimators=800, random_state=42, n_jobs=-1)
 rf.fit(X_res, y_res)
 metrics = evaluate_clf(rf, 'Random Forest', X_test_scaled, y_test)
 model_metrics = pd.concat([model_metrics, pd.DataFrame([metrics])], ignore_index=True)
 
-## Đánh giá mô hình
+## 🔹Đánh giá mô hình
 import pandas as pd
 
 -Tạo lại bảng sạch (chỉ còn các cột cần thiết, không có roc_auc)
@@ -272,7 +271,7 @@ display(model_metrics.sort_values('f1', ascending=False)
         .set_caption("SO SÁNH 2 MÔ HÌNH SAU SMOTE")
         .format("{:.4f}"))
 
-# Demo
+## 🔹Demo
 import joblib
 import pandas as pd
 import numpy as np
@@ -302,7 +301,7 @@ def du_doan_tieu_duong(
     data_scaled = data.copy()
     data_scaled[cols_to_scale] = scaler.transform(data[cols_to_scale])
     
-    # Dự đoán
+## 🔹Dự đoán
     prob = model.predict_proba(data_scaled)[0][1]
     pred = "CÓ NGUY CƠ TIỂU ĐƯỜNG" if prob >= 0.5 else "BÌNH THƯỜNG"
     
