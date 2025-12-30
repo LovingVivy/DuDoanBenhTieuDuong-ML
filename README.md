@@ -61,5 +61,62 @@ Random Forest:      0.7884      0.2023      0.7910  0.3222
 - Precision (Độ chính xác dự đoán danh tính): Metric này cho biết bao nhiêu phần trăm các trường hợp dự đoán dương tính (ví dụ: dự đoán có nguy cơ) thực sự là dương tính. Nó tập trung vào việc giảm thiểu false positive
 - Recall (Độ nhạy): Metric này đo lường bao nhiêu phần trăm các trường hợp dương tính thực tế (ví dụ: người thực sự có nguy cơ) mà mô hình xác định đúng. Nó tập trung vào việc giảm thiểu false negative
 - F1 (Điểm F1): Đây là trung bình hài hòa của Precision và Recall, cung cấp một measure cân bằng khi bạn quan tâm đến cả hai. Nó hữu ích khi các lớp không cân bằng
-
+----------------------------------------------------------------------------
 ## Hướng dẫn chạy
+- Hướng dẫn chạy model: Cần cài đặt Python trên thiết bị của bạn
+Cài python: https://www.python.org/downloads/ 
+
+- Môi trường chuẩn bị: VsCode hoặc googlelab
+- Trước khi chạy cần cài các thư viện phù hợp, cài trên terminal nhấn tổ hợp phím win + R và gõ cmd và gõ:
+  * numpy: pip install numpy
+  * pandas: pip install pandas
+  * matplotlib: pip install matplotlib
+  * Smote: pip install imbalanced-learn
+  * sklearn: pip install scikit-learn
+ 
+## Chạy huấn luyện Training
+1. Đảm bảo file dữ liệu Train.csv nằm cùng thư mục với file notebook DuDoanTieuDuong.ipynb.
+2. Mở file DuDoanTieuDuong.ipynb bằng Jupyter Notebook hoặc VS Code, gg 
+3. Chọn Run All hoặc chạy lần lượt các cell từ trên xuống dưới để thực hiện quy trình:
+   * Load dữ liệu và Tiền xử lý (Làm sạch, xử lý Outlier, điền giá trị thiếu).
+   * Trực quan hóa dữ liệu EDA
+   * Huấn luyện mô hình (RF, LR)
+
+ ## Chạy Demo
+Ở cuối file notebook, một hàm dự đoán du_doan_tieu_duong() đã được viết sẵn để bạn kiểm tra thử trên dữ liệu mới.
+Cách sử dụng: Nhập các thông số sức khỏe vào hàm để nhận kết quả dự báo:
+# Ví dụ chạy thử
+du_doan_tieu_duong(
+    age=45,                 # Tuổi
+    gender=1,               # Giới tính (0: Nữ, 1: Nam)
+    pulse_rate=70,          # Nhịp tim
+    systolic_bp=120,        # Huyết áp tâm thu
+    diastolic_bp=80,        # Huyết áp tâm trương
+    glucose=7.5,            # Đường huyết (mmol/L) - Quan trọng
+    height=1.65,            # Chiều cao (m)
+    weight=65.0,            # Cân nặng (kg)
+    bmi=23.8,               # BMI
+    family_diabetes=1,      # Tiền sử gia đình (0/1)
+    hypertensive=0,         # Huyết áp cao (0/1)
+    family_hypertension=0,  # Tiền sử gia đình HA cao (0/1)
+    cardiovascular_disease=0, # Bệnh tim mạch (0/1)
+    stroke=0                # Đột quỵ (0/1)
+)
+
+## Cấu trúc thư mục dự án
+Cấu trúc tổ chức file
+├── DuDoanTieuDuong.ipynb  
+├── Train/ Test            
+
+Sở đồ cáu trúc dự án để đảm báo mã nguồn chạy chính xác:
+* Load dữ liệu
+* Tiền xử lý
+* Vẽ biểu đồ
+* Huấn luyện mô hình
+* Áp dụng thuật toán
+* Ứng dụng demo
+-------------------------------------------------------------------------------------------------------
+## Tác giả
+Họ tên: Phạm Tùng Dương
+Mã sinh viên: 10123071
+Mã lớp: 12423TN
