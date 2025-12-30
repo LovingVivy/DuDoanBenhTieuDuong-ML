@@ -31,16 +31,11 @@ Mô tả các cột:
 ------------------------------------------------------------------------------------------------------
 ## Pipeline xử lý dữ liệu
 Pipeline của hệ thống gồm các bước sau:
-Data Loading
-   ↓
-Data Cleaning & Preprocessing
-   ↓
-Train/Test Split
-   ↓
-Train Model
-   ↓
-Evaluate Model
-   ↓
+Data Loading -> 
+Data Cleaning & Preprocessing ->
+Train/Test Split ->
+Train Model ->
+Evaluate Model 0 ->
 Inference (Dự đoán dữ liệu mới)
 
 
