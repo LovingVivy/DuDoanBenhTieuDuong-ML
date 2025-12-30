@@ -10,6 +10,7 @@ Việc phát hiện sớm nguy cơ mắc bệnh dựa trên các chỉ số y t�
 ## Dataset: 
 Nguồn dữ liệu DiaBD A Diabetes Dataset for Enhanced Risk Analysis and Research in Bangladesh
 Nguồn tải dataset: https://data.mendeley.com/datasets/m8cgwxs9s6/2
+
 Mô tả các cột:
 - age: Tuổi
 - gender: Giới tính
