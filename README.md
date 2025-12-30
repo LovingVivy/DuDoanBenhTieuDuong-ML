@@ -44,5 +44,22 @@ Chi tiết:
 - Chia tập train & test
 - Huấn luyện các mô hình
 - Đánh giá bằng các metric phù hợp
+  * sử dụng các chỉ số: Accuracy, Confusion Matrix (Ma trận nhầm lẫn)
+- Dự đoán: Xây dựng hàm 'Du_doan_tieu_duong()' để nhập thông số và trả về xác suất mắc bệnh
+-----------------------------------------------------------------------------------------------------
+## Các mô hình sử dụng
+*Random Forest: được chọn sử dụng trong bài vì khả năng xử lý tốt dữ liệu bảng, chống overfitting tốt hơn Decision Tree và cho độ chính xác cao, phù hợp với yêu cầu bài toán.
+*Logistic Regression: (Mô hình chính) được chọn trong bài vì khả năng dự đoán đúng người bệnh thực sự, nó 
+có tỉ lệ bỏ sót của nó thấp hơn random forest.
 
+## Kết quả
+                    Accuracy    Precision   Recall  F1
+Logistic Regression:0.9137      0.3462      0.4030  0.3724
+Random Forest:      0.7884      0.2023      0.7910  0.3222
 
+- Accuracy (Độ chính xác):Metric này đo lường độ đúng đắn tổng thể của các dự đoán mô hình. Nó là tỷ lệ các trường hợp dự đoán đúng (cả true positive và true negative) trên tổng số trường hợp
+- Precision (Độ chính xác dự đoán danh tính): Metric này cho biết bao nhiêu phần trăm các trường hợp dự đoán dương tính (ví dụ: dự đoán có nguy cơ) thực sự là dương tính. Nó tập trung vào việc giảm thiểu false positive
+- Recall (Độ nhạy): Metric này đo lường bao nhiêu phần trăm các trường hợp dương tính thực tế (ví dụ: người thực sự có nguy cơ) mà mô hình xác định đúng. Nó tập trung vào việc giảm thiểu false negative
+- F1 (Điểm F1): Đây là trung bình hài hòa của Precision và Recall, cung cấp một measure cân bằng khi bạn quan tâm đến cả hai. Nó hữu ích khi các lớp không cân bằng
+
+## Hướng dẫn chạy
