@@ -26,11 +26,11 @@ df['diabetic'] = df['diabetic'].map({'No': 0, 'Yes': 1})
 df['gender'] = df['gender'].map({'Female': 0, 'Male': 1})
 
 df = df.copy()
-# chỉ số khối trong cơ thể không nhỏ hơn 60
+-chỉ số khối trong cơ thể không nhỏ hơn 60
 df = df[df['bmi'] <= 60]
-# đường trong cơ thể không thể nhỏ hơn 25 mmol/l 
+-đường trong cơ thể không thể nhỏ hơn 25 mmol/l 
 df = df[df['glucose'] <= 25]
-# huyết áp
+-huyết áp
 df = df[df['systolic_bp'] >= 70]   # <70 là sốc
 df = df[df['systolic_bp'] <= 250] # <= 250 thì đi viện
 
@@ -44,21 +44,21 @@ if num_duplicates > 0:
     display(df[df.duplicated(keep=False)].sort_values(by=list(df.columns)))
 
 # Xử lý giá trị thiếu
-# Kiểm tra tổng số giá trị thiếu ở mỗi cột
+-Kiểm tra tổng số giá trị thiếu ở mỗi cột
 missing_info = df.isnull().sum()
 print("Số lượng giá trị thiếu ở mỗi cột:")
 print(missing_info[missing_info > 0])
 
-# Liệt kê các cột số cần điền giá trị
+-Liệt kê các cột số cần điền giá trị
 cols_to_fix = ['age', 'pulse_rate', 'systolic_bp', 'diastolic_bp', 'glucose', 'height', 'weight', 'bmi']
 
-# Điền giá trị thiếu bằng trung vị của cột đó
+-Điền giá trị thiếu bằng trung vị của cột đó
 for col in cols_to_fix:
     if col in df.columns:
         df[col] = df[col].fillna(df[col].median())
 print("Đã xử lý xong giá trị thiếu bằng phương pháp điền trung vị.")
 
-# Xử lý nhiễu
+-Xử lý nhiễu
 def handle_outliers_iqr(df, columns):
     df_clean = df.copy()
     for col in columns:
@@ -127,11 +127,11 @@ plt.tight_layout()
 plt.show()
 
 # Biểu đồ hiển thị các feature quan trọng
-# Chỉ giữ lại cột số để train model
+-Chỉ giữ lại cột số để train model
 df_model = df.select_dtypes(include=['float64', 'int64'])
 X = df_model.drop('diabetic', axis=1)
 y = df_model['diabetic']
-# Feature importance
+-Feature importance
 importances = rf.feature_importances_
 feat_imp = pd.Series(importances, index=X.columns).sort_values(ascending=False)
 plt.figure(figsize=(10, 7))
@@ -165,7 +165,7 @@ X_test_scaled[cols_to_scale]  = scaler.transform(X_test[cols_to_scale])
 
 # Smote dữ liệu
 smote = SMOTE(random_state=42)
-# sinh dữ liệu
+-sinh dữ liệu
 X_train_smote, y_train_smote = smote.fit_resample(X_train, y_train)
 print("Sau khi SMOTE:", y_train_smote.value_counts())
 
@@ -219,7 +219,7 @@ def evaluate_clf(model, model_name, X_test, y_test):
         "recall": rec,
         "f1": f1
     }
-# Cập nhật DataFrame để phù hợp
+-Cập nhật DataFrame để phù hợp
 model_metrics = pd.DataFrame(columns=[
     "modelname", "accuracy", "precision", "recall", "f1"
 ])
@@ -246,24 +246,24 @@ model_metrics = pd.concat([model_metrics, pd.DataFrame([metrics])], ignore_index
 ## Đánh giá mô hình
 import pandas as pd
 
-# Tạo lại bảng sạch (chỉ còn các cột cần thiết, không có roc_auc)
+-Tạo lại bảng sạch (chỉ còn các cột cần thiết, không có roc_auc)
 model_metrics = pd.DataFrame(columns=["modelname", "accuracy", "precision", "recall", "f1"])
-# Áp dụng SMOTE
+-Áp dụng SMOTE
 X_res, y_res = SMOTE(random_state=42).fit_resample(X_train_scaled, y_train)
-# Logistic Regression
+-Logistic Regression
 log = LogisticRegression(max_iter=1000, random_state=42)
 log.fit(X_res, y_res)
 metrics_log = evaluate_clf(log, "Logistic", X_test_scaled, y_test)
 model_metrics = pd.concat([model_metrics, pd.DataFrame([metrics_log])], ignore_index=True)
-# Random Forest
+-Random Forest
 rf = RandomForestClassifier(n_estimators=800, random_state=42, n_jobs=-1)
 rf.fit(X_res, y_res)
 metrics_rf = evaluate_clf(rf, "Random Forest", X_test_scaled, y_test)
 model_metrics = pd.concat([model_metrics, pd.DataFrame([metrics_rf])], ignore_index=True)
-# Chuẩn bị hiển thị bảng
+-Chuẩn bị hiển thị bảng
 model_metrics = model_metrics.set_index('modelname')
-# Sắp xếp theo f1 (hoặc bạn có thể chọn accuracy/recall tùy ý, vì không còn roc_auc)
-# Ở đây mình chọn sort theo f1 descending - thường là metric quan trọng nhất trong bài toán imbalance
+-Sắp xếp theo f1 (hoặc bạn có thể chọn accuracy/recall tùy ý, vì không còn roc_auc)
+-Ở đây mình chọn sort theo f1 descending - thường là metric quan trọng nhất trong bài toán imbalance
 display(model_metrics.sort_values('f1', ascending=False)
         .style.background_gradient(cmap='Greens', subset=['f1'])  # Tô màu cột f1
         .highlight_max(axis=0, props='font-weight:bold; color:gold;')  # Highlight giá trị max từng cột
