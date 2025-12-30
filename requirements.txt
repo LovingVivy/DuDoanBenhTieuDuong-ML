@@ -1,3 +1,3 @@
-Cấy hình tối thiểu của máy cần sử dụng window XP, ram tối thiểu >= 4 GB, SSD tối thiểu trống 1GB
+Cấy hình tối thiểu của máy cần sử dụng window XP, ram tối thiểu >= 4 GB, SSD tối thiểu trống 1GB, CPU tối thiểu core i3 Số nhân: ≥ 2 cores, Xung nhịp: ≥ 2.0 GHz
 Máy cần cài đặt Python phiên bản tối thiểu >= 3.8, numpy>=1.21, pandas>=1.3, scikit-learn>=1.0
 
