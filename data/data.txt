@@ -1,1 +1,13 @@
+Để tại dataset bạn có thể lên google hoặc các trình duyệt khác gõ: DiaBD: A Diabetes Dataset for Enhanced Risk Analysis and Research in Bangladesh nhấn vào kết quả đầu tiên và nhấn download để tải về
+Hoặc có thể nhấn vào link: https://data.mendeley.com/datasets/m8cgwxs9s6/2 sau đó tải về
 
+- Mẫu một số hàng dữ liệu 
+42,Female,66,110,73,5.88,1.65,70.2,25.75,0,0,0,0,0,No
+35,Female,60,125,68,5.71,1.47,42.5,19.58,0,0,0,0,0,No
+62,Female,57,127,74,6.85,1.52,47.0,20.24,0,0,0,0,0,No
+73,Male,55,193,112,6.28,1.63,57.4,21.72,0,0,0,0,0,No
+68,Female,71,150,81,5.71,1.42,36.0,17.79,0,0,0,0,0,No
+40,Male,48,131,73,7.22,1.63,61.9,23.42,0,0,0,0,0,No
+35,Female,66,123,72,5.4,1.42,42.3,20.91,0,0,0,0,0,No
+25,Female,84,152,90,7.2,1.52,57.7,24.84,0,0,0,0,0,No
+50,Male,80,135,87,17.04,1.68,67.8,24.13,0,0,0,0,0,Yes
