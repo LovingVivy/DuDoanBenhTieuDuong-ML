@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dự Đoán Nguy Cơ Tiểu Đường</title>
+    <style>
+        :root { --primary: #007bff; --overlay: rgba(0, 0, 0, 0.6); }
+        body, html { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; height: 100%; }
+
+        /* --- 1. STYLES CHO MÀN HÌNH CHÀO MỪNG (LANDING PAGE) --- */
+        #landing-page {
+            height: 100vh;
+            width: 100%;
+            /* Ảnh nền bệnh viện (Lấy từ Unsplash) */
+            background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
+        /* Lớp phủ màu đen để chữ dễ đọc hơn */
+        #landing-page::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--overlay);
+            z-index: 1;
+        }
+
+        .landing-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h1.main-title {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: 800;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #f0f0f0;
+        }
+
+        /* Nút Xác nhận ở giữa */
+        .btn-start {
+            padding: 15px 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+            background: linear-gradient(45deg, #ff6b6b, #ee5253);
+        }
+
+        /* --- 2. STYLES CHO FORM DỰ ĐOÁN (ẨN MẶC ĐỊNH) --- */
+        #prediction-app {
+            display: none; /* Ẩn lúc đầu */
+            padding: 40px 20px;
+            background-color: #f4f7f6;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); animation: slideUp 0.8s ease-out; }
+        
+        /* (Copy lại CSS Form cũ) */
+        h2 { text-align: center; color: var(--primary); margin-bottom: 30px; }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #333; }
+        input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .btn-predict { grid-column: span 2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        
+        /* Result Styles */
+        #result { margin-top: 30px; text-align: center; display: none; padding: 20px; border-radius: 8px; }
+        .high-risk { background-color: #ffebee; border: 2px solid #ef5350; color: #c62828; }
+        .low-risk { background-color: #e8f5e9; border: 2px solid #66bb6a; color: #2e7d32; }
+        .result-percent { font-size: 2.5rem; font-weight: bold; margin: 10px 0; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { h1.main-title { font-size: 2rem; } .grid-container { grid-template-columns: 1fr; } .btn-predict { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="landing-page">
+        <div class="landing-content">
+            <h1 class="main-title">DỰ ĐOÁN NGUY CƠ<br>MẮC BỆNH TIỂU ĐƯỜNG</h1>
+            <p class="subtitle">Hệ thống phân tích sức khỏe dựa trên AI</p>
+            <button class="btn-start" onclick="openApp()">BẮT ĐẦU NGAY</button>
+        </div>
+    </div>
+
+    <div id="prediction-app">
+        <div class="container">
+            <h2>🩺 Nhập Thông Tin Sức Khỏe</h2>
+            
+            <div class="grid-container">
+                <div class="form-group"><label>Tuổi (Age)</label><input type="number" id="age" placeholder="Ví dụ: 45"></div>
+                <div class="form-group"><label>Giới tính</label><select id="gender"><option value="1">Nam</option><option value="0">Nữ</option></select></div>
+                
+                <div class="form-group"><label>Chiều cao (m)</label><input type="number" id="height" step="0.01" onchange="calcBMI()" placeholder="Ví dụ: 1.70"></div>
+                <div class="form-group"><label>Cân nặng (kg)</label><input type="number" id="weight" step="0.1" onchange="calcBMI()" placeholder="Ví dụ: 65"></div>
+                <div class="form-group" style="grid-column: span 2;"><label>BMI (Tự động)</label><input type="number" id="bmi" readonly style="background: #eee;"></div>
+
+                <div class="form-group"><label>Đường huyết (mmol/L)</label><input type="number" id="glucose" step="0.1" placeholder="Ví dụ: 5.5"></div>
+                <div class="form-group"><label>Nhịp tim</label><input type="number" id="pulse_rate" placeholder="Ví dụ: 75"></div>
+                <div class="form-group"><label>Huyết áp tâm thu</label><input type="number" id="systolic_bp" placeholder="Ví dụ: 120"></div>
+                <div class="form-group"><label>Huyết áp tâm trương</label><input type="number" id="diastolic_bp" placeholder="Ví dụ: 80"></div>
+
+                <div class="form-group"><label>Tiền sử tiểu đường gia đình?</label><select id="family_diabetes"><option value="0">Không</option><option value="1">Có</option></select></div>
+                <div class="form-group"><label>Cá nhân mắc tăng huyết áp?</label><select id="hypertensive"><option value="0">Không</option><option value="1">Có</option></select></div>
+                <div class="form-group"><label>Tiền sử tăng huyết áp gia đình?</label><select id="family_hypertension"><option value="0">Không</option><option value="1">Có</option></select></div>
+                <div class="form-group"><label>Mắc bệnh tim mạch?</label><select id="cardiovascular_disease"><option value="0">Không</option><option value="1">Có</option></select></div>
+                <div class="form-group"><label>Tiền sử đột quỵ?</label><select id="stroke"><option value="0">Không</option><option value="1">Có</option></select></div>
+
+                <button class="btn-predict" onclick="predictRisk()">PHÂN TÍCH KẾT QUẢ</button>
+            </div>
+
+            <div id="result">
+                <h3>Kết quả dự đoán:</h3>
+                <div class="result-percent" id="score">0%</div>
+                <p id="advice">...</p>
+                <button onclick="location.reload()" style="margin-top: 15px; padding: 10px; background: #ddd; border: none; border-radius: 5px; cursor: pointer;">Làm lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Hàm chuyển đổi màn hình
+        function openApp() {
+            document.getElementById('landing-page').style.display = 'none'; // Ẩn màn hình chào
+            document.getElementById('prediction-app').style.display = 'block'; // Hiện form
+        }
+
+        // 2. Hàm tính BMI
+        function calcBMI() {
+            let h = parseFloat(document.getElementById('height').value);
+            let w = parseFloat(document.getElementById('weight').value);
+            if (h > 0 && w > 0) {
+                document.getElementById('bmi').value = (w / (h * h)).toFixed(2);
+            }
+        }
+
+        // 3. Logic dự đoán (Logistic Regression)
+        const MODEL_PARAMS = {
+            intercept: -5.35, // *** THAY BẰNG GIÁ TRỊ THẬT TỪ PYTHON CỦA BẠN ***
+            weights: {
+                age: 0.045, gender: -0.12, pulse_rate: 0.01, systolic_bp: 0.025,
+                diastolic_bp: 0.015, glucose: 1.15, height: -0.5, weight: 0.02,
+                bmi: 0.08, family_diabetes: 0.95, hypertensive: 0.6,
+                family_hypertension: 0.3, cardiovascular_disease: 0.7, stroke: 0.8
+            },
+            means: { /* ...Điền giá trị mean nếu dùng StandardScaler... */ },
+            scales: { /* ...Điền giá trị scale nếu dùng StandardScaler... */ }
+        };
+
+        function sigmoid(z) { return 1 / (1 + Math.exp(-z)); }
+
+        function predictRisk() {
+            // Lấy input (Nếu bạn KHÔNG dùng StandardScaler trong Python, dùng code này)
+            // Nếu CÓ dùng StandardScaler, bạn cần thêm bước (val - mean)/scale như bài trước
+            let z = MODEL_PARAMS.intercept;
+            
+            // Tính toán Z = w1*x1 + w2*x2 + ... + b
+            z += parseFloat(document.getElementById('age').value || 0) * MODEL_PARAMS.weights.age;
+            z += parseFloat(document.getElementById('gender').value) * MODEL_PARAMS.weights.gender;
+            z += parseFloat(document.getElementById('glucose').value || 0) * MODEL_PARAMS.weights.glucose;
+            z += parseFloat(document.getElementById('bmi').value || 0) * MODEL_PARAMS.weights.bmi;
+            // ... (Thêm các trường còn lại tương tự) ...
+            
+            // Mô phỏng kết quả nhanh để demo (Xóa dòng này khi lắp công thức đầy đủ)
+            // Logic demo: Nếu Glucose > 7 hoặc có tiền sử gia đình -> Nguy cơ cao
+            let demoGlucose = parseFloat(document.getElementById('glucose').value || 0);
+            let demoFamily = document.getElementById('family_diabetes').value == "1";
+            
+            let risk = 0;
+            if(demoGlucose > 7 || demoFamily) risk = 85.5; 
+            else risk = 12.4;
+
+            // Hiển thị
+            let resDiv = document.getElementById('result');
+            let scoreDiv = document.getElementById('score');
+            let adviceDiv = document.getElementById('advice');
+
+            resDiv.style.display = 'block';
+            resDiv.scrollIntoView({behavior: "smooth"});
+            scoreDiv.innerText = risk.toFixed(2) + "%";
+
+            if (risk > 50) {
+                resDiv.className = 'high-risk';
+                adviceDiv.innerText = "⚠️ CẢNH BÁO: Nguy cơ cao! Dựa trên các chỉ số nhập vào (đặc biệt là Glucose), bạn nên đi khám bác sĩ.";
+            } else {
+                resDiv.className = 'low-risk';
+                adviceDiv.innerText = "✅ AN TOÀN: Các chỉ số hiện tại ở mức ổn định.";
+            }
+        }
+    </script>
+</body>
+</html>
